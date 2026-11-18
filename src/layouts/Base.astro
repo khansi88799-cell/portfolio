@@ -1,0 +1,118 @@
+---
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+const fullTitle = title === 'Home' ? 'Mohammad Saeed Khan · Product Owner' : `${title} · Mohammad Saeed Khan`;
+const nav = [
+  { href: '/#lens', label: 'How I think' },
+  { href: '/#work', label: 'Work' },
+  { href: '/#build', label: 'How I build' },
+  { href: '/#ai', label: 'AI approach' },
+  { href: '/#journey', label: 'Journey' },
+  { href: '/#certs', label: 'Certifications' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <meta name="theme-color" content="#111214" />
+  <style is:global>
+    /* Dark editorial theme: ink background, warm text, one indigo accent */
+    :root {
+      --bg: #111214; --surface: #1a1c20; --fg: #eceae4; --muted: #a3a7b0; --faint: #747984; --line: #2b2e34;
+      --accent: #8f8bff; --accent-ink: #0e0d24; --accent-soft: #23224a; --ok: #6fd3a0; --ok-soft: #173027; --warn: #e6b16a; --warn-soft: #33281a;
+      --display: "Inter Tight", "Inter", system-ui, sans-serif; --body: "Inter", system-ui, -apple-system, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+      color-scheme: dark;
+    }
+    * { box-sizing: border-box }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.65 var(--body); -webkit-font-smoothing: antialiased }
+    ::selection { background: var(--accent-soft) }
+    a { color: var(--accent) }
+    img, video { max-width: 100%; display: block }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left)) }
+    @media (min-width: 700px) { .wrap { padding: 0 28px } }
+    h1, h2, h3 { font-family: var(--display); line-height: 1.08; letter-spacing: -.02em; text-wrap: balance; font-weight: 600 }
+    h2 { font-size: clamp(30px, 4.4vw, 48px); margin: 0 0 14px }
+    .eyebrow { font: 500 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; display: flex; gap: 10px; align-items: center }
+    .eyebrow .num { color: var(--accent) }
+    .muted { color: var(--muted) }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 8px; font: 600 15px var(--body); text-decoration: none; border: 1px solid var(--line); color: var(--fg); background: var(--surface); transition: border-color .15s, transform .15s }
+    .btn:hover { border-color: var(--fg) }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink) }
+    .btn.primary:hover { transform: translateY(-1px) }
+    .tag { display: inline-block; font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 3px 8px; border-radius: 4px }
+    .status { display: inline-flex; align-items: center; gap: 6px; font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent) }
+    .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor }
+    .status.Live, .status.Shipped { background: var(--ok-soft); color: var(--ok) }
+    .status.In-review { background: var(--warn-soft); color: var(--warn) }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease }
+    .reveal.in { opacity: 1; transform: none }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } .reveal { opacity: 1; transform: none; transition: none } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <nav class="wrap" aria-label="Main">
+      <a class="brand" href="/">Mohammad Saeed Khan</a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
+      <div class="links" id="menu">{nav.map((n) => <a href={n.href}>{n.label}</a>)}</div>
+    </nav>
+  </header>
+  <main id="main"><slot /></main>
+  <footer class="wrap foot">
+    <span>© 2026 Mohammad Saeed Khan · Mumbai, India</span>
+    <span>Built with Astro · <a href="https://github.com/khansi88799-cell/portfolio">Source</a></span>
+  </footer>
+  <script>
+    // Mobile menu
+    const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+    const menu = document.getElementById('menu');
+    btn?.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      menu?.classList.toggle('open', !open);
+    });
+    menu?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).tagName === 'A') { btn?.setAttribute('aria-expanded', 'false'); menu.classList.remove('open'); }
+    });
+    // Fade sections in as they scroll into view
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+  <style>
+    header.site { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line) }
+    nav { display: flex; justify-content: space-between; align-items: center; height: 60px; gap: 16px; position: relative }
+    .brand { font: 600 16px var(--display); color: var(--fg); text-decoration: none; white-space: nowrap }
+    .links { display: flex; gap: 22px }
+    .links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; white-space: nowrap }
+    .links a:hover { color: var(--fg) }
+    .menu-btn { display: none; font: 500 15px var(--body); background: none; border: 1px solid var(--line); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer }
+    @media (max-width: 1080px) {
+      .menu-btn { display: block }
+      .links { display: none; position: absolute; top: 60px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px 16px }
+      .links.open { display: flex }
+      .links a { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 17px }
+    }
+    .skip { position: absolute; left: 12px; top: -48px; z-index: 50; background: var(--accent); color: var(--accent-ink); padding: 8px 14px; border-radius: 6px; font-weight: 600; text-decoration: none }
+    .skip:focus { top: 12px }
+    .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding-top: 28px; padding-bottom: 40px; border-top: 1px solid var(--line); margin-top: 96px; font-size: 14px; color: var(--muted) }
+  </style>
+</body>
+</html>

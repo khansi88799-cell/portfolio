@@ -1,0 +1,22 @@
+---
+// Ten-dot lifecycle bar: filled dots are the stages this project covered
+import { STAGES } from '../lib/stages';
+interface Props { stages: string[]; compact?: boolean }
+const { stages, compact = false } = Astro.props;
+---
+<div class:list={['life', { compact }]}>
+  <div class="life-head"><span>Lifecycle</span><strong>{stages.length}/{STAGES.length}</strong></div>
+  <ol class="dots" aria-label={`Lifecycle stages: ${stages.join(', ')}`}>
+    {STAGES.map((s) => <li class:list={{ on: stages.includes(s) }} title={s}><span class="sr">{s}</span></li>)}
+  </ol>
+  {!compact && <p class="names">{stages.join(' · ')}</p>}
+</div>
+<style>
+  .life-head { display: flex; justify-content: space-between; font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+  .life-head strong { color: var(--fg); font-weight: 500 }
+  .dots { list-style: none; padding: 0; margin: 8px 0 0; display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px }
+  .dots li { height: 6px; border-radius: 3px; background: var(--line) }
+  .dots li.on { background: var(--accent) }
+  .names { margin: 8px 0 0; font-size: 13px; color: var(--muted) }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0) }
+</style>

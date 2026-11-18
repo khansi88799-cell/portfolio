@@ -1,0 +1,327 @@
+---
+import Base from '../layouts/Base.astro';
+import WorkCard from '../components/WorkCard.astro';
+import Lifecycle from '../components/Lifecycle.astro';
+import { getCollection } from 'astro:content';
+import { STAGES, PHASES } from '../lib/stages';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const featured = work.filter((w) => w.data.featured);
+const more = work.filter((w) => !w.data.featured);
+const byId = Object.fromEntries(work.map((w) => [w.id, w]));
+
+const lens = [
+  { name: 'Clarity', line: 'The next step should be obvious before anyone has to ask.', id: 'delivery-2', quote: 'Address, store and order belong in one journey, not two apps.' },
+  { name: 'Remove the manual', line: 'If people repeat it every day, the product should do it for them.', id: 'skin-master-clinic', quote: 'Three people and a doctor checking sheets became one receptionist and an admin.' },
+  { name: 'Real scope first', line: 'Count the actual work before promising a date.', id: 'adaptive-ui', quote: 'The estimate said 90 screens. Walking every journey found 324.' },
+  { name: 'Grounded AI', line: 'AI should work from real data, not from guesses.', id: 'ai-ordering-assistant', quote: 'The model fills a schema; the menu database decides what exists.' },
+];
+
+const journey = [
+  { when: '2021 – 2023', role: 'iOS Developer', where: 'Capgemini · global QSR brand', body: 'Built delivery features in SwiftUI on the store, cart, order and payment APIs, and fixed what broke in production.', ids: [] as string[] },
+  { when: '2023 – 2024', role: 'Developer + QA Lead', where: 'Capgemini · global QSR brand', body: 'Led QA for the delivery module alongside development: 400+ test cases and four automation suites running daily. Handled the UK release, which passed UAT with zero bugs.', ids: [] },
+  { when: '2024 – 2025', role: 'Business Analyst', where: 'Capgemini · global QSR brand', body: 'Moved from writing code to writing what should be built: BRDs, FRDs, BPMN, user stories and API contracts for the 2.0 ordering journey.', ids: ['delivery-2'] },
+  { when: '2025 – 2026', role: 'Product Owner & BA', where: 'Capgemini · global QSR brand', body: 'Owned the backlog for landscape support across 324 screens, then for a Generative AI ordering assistant. Value Creator Award, 2025.', ids: ['adaptive-ui', 'ai-ordering-assistant'] },
+  { when: '2025 – 2026', role: 'MBA, Business Management', where: 'NMIMS, Mumbai', body: 'Strategy, finance and marketing to go with the delivery experience.', ids: [] },
+  { when: '2026 – now', role: 'Building my own products', where: 'Independent', body: 'Taking ideas from discovery to live products as product owner, analyst and engineer, with AI-assisted development.', ids: ['skin-master-clinic', 'ashraf-traders', 'insurance-learning-desk', 'deen-companion'] },
+];
+
+const aiPrinciples = [
+  { name: 'AI-first', line: 'I reach for AI early: research, first drafts of stories and test cases, prototypes and code. It shortens the loop from idea to something people can react to.' },
+  { name: 'Grounded, not guessed', line: 'AI answers come from real data: a schema, a menu database, the source document. If the model cannot cite where it came from, it does not ship.' },
+  { name: 'Verified before shared', line: 'Every AI output is checked by a person before I conclude or share it: numbers against the source, code against tests, claims against evidence.' },
+  { name: 'Ethical and private', line: 'No client or patient data goes into public tools. I disclose when work is AI-assisted, and I state what is still unproven instead of hiding it.' },
+];
+
+const certs = [
+  { name: 'Claude Certified Architect – Professional', by: 'Anthropic', group: 'AI' },
+  { name: 'Generative AI', group: 'AI' },
+  { name: 'AI for Project Management', group: 'AI' },
+  { name: 'Agile Software Development', by: 'University of Minnesota', group: 'Product & delivery' },
+  { name: 'Fundamentals of Business Analysis', group: 'Product & delivery' },
+  { name: 'BPMN 2.0', group: 'Product & delivery' },
+  { name: 'Power BI', group: 'Data' },
+  { name: 'MBA, Business Management', by: 'NMIMS, Mumbai · 2026', group: 'Education' },
+];
+const awards = [
+  { name: 'Value Creator Award', by: 'Capgemini · 2025' },
+  { name: 'Nominated, Delivery Excellence Award', by: 'Capgemini · 2024' },
+];
+
+const skills = {
+  Product: ['Vision & roadmap', 'Backlog prioritisation (MoSCoW, RICE)', 'MVP definition', 'A/B testing', 'KPIs & analytics'],
+  Analysis: ['BRD / FRD', 'User stories & acceptance criteria', 'BPMN 2.0', 'Gap & impact analysis', 'UAT & SIT'],
+  'AI & technical': ['RAG & multi-agent design', 'REST & WebSocket APIs', 'SQL', 'Swift, React Native, Next.js', 'Supabase, Cloudflare'],
+  Tools: ['JIRA', 'Confluence', 'Figma', 'Postman', 'Power BI', 'GitHub'],
+};
+---
+<Base title="Home" description="Product Owner and Business Analyst with 5+ years on a global QSR brand's ordering apps, and four products of my own. Former iOS developer.">
+  <!-- 01 Hero -->
+  <section class="hero wrap">
+    <p class="eyebrow">Product Owner · Product Manager · Business Analyst</p>
+    <h1>I started by writing the code.<br /><span>Now I decide what's worth building.</span></h1>
+    <p class="lede">Product Owner with 5+ years on a global QSR brand's ordering apps at Capgemini, moving from iOS developer to QA lead, Business Analyst and Product Owner. I also build products of my own: four so far, three of them live.</p>
+    <div class="cta">
+      <a class="btn primary" href="#work">Explore my work</a>
+      <a class="btn" href="#lens">How I think</a>
+      <a class="btn" href="/Mohammad_Saeed_Khan_CV.pdf" download>Download CV</a>
+    </div>
+    <ol class="arc" aria-label="Career path">
+      <li>Developer</li><li>QA lead</li><li>Business Analyst</li><li>Product Owner</li><li>Builder</li>
+    </ol>
+  </section>
+
+  <!-- 02 Lens -->
+  <section id="lens" class="wrap block reveal">
+    <p class="eyebrow"><span class="num">02</span> The product lens</p>
+    <h2>How I look at products.</h2>
+    <div class="lens">
+      {lens.map((l, i) => (
+        <article>
+          <span class="lens-n">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{l.name}</h3>
+          <p>{l.line}</p>
+          <p class="applied">Applied in <a href={`/work/${l.id}/`}>{byId[l.id].data.title}</a></p>
+          <blockquote>“{l.quote}”</blockquote>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 03 Selected work -->
+  <section id="work" class="wrap block">
+    <p class="eyebrow"><span class="num">03</span> Work</p>
+    <h2 class="reveal">Selected work</h2>
+    <div class="featured">
+      {featured.map((w, i) => <WorkCard entry={w} index={i + 1} />)}
+    </div>
+  </section>
+
+  <!-- 04 Tracer -->
+  <section id="build" class="wrap block reveal">
+    <p class="eyebrow"><span class="num">04</span> How I build</p>
+    <h2>From a question to a product.</h2>
+    <p class="muted intro">Select a project to trace it across the stages.</p>
+    <div class="picker" role="group" aria-label="Projects">
+      <button class="on" data-pick="all" aria-pressed="true">All</button>
+      {work.map((w) => <button data-pick={w.id} aria-pressed="false">{w.data.title}</button>)}
+    </div>
+    <div class="phases">
+      {PHASES.map((p) => (
+        <div class="phase">
+          <p class="phase-name">{p.name}</p>
+          {p.stages.map((s) => (
+            <div class="stage" data-stage={s}>
+              <p class="stage-name"><span>{String(STAGES.indexOf(s) + 1).padStart(2, '0')}</span>{s}</p>
+              <ul>{work.filter((w) => w.data.stages.includes(s)).map((w) => <li data-id={w.id}>{w.data.title}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 05 More work -->
+  <section class="wrap block reveal">
+    <p class="eyebrow"><span class="num">05</span> More work</p>
+    <h2>Products I built myself</h2>
+    <div class="more">
+      {more.map((w) => (
+        <a class="mc" href={`/work/${w.id}/`}>
+          {w.data.cover && <img src={w.data.cover} alt="" loading="lazy" width="1440" height="900" />}
+          <div class="mc-body">
+            <div class="mc-tags">{w.data.tags.map((t) => <span class="tag">{t}</span>)}</div>
+            <h3>{w.data.title}</h3>
+            <p>{w.data.headline}</p>
+            <p class="mc-role"><span>Role</span>{w.data.role}</p>
+            <div class="mc-foot"><span class:list={['status', w.data.status.replace(' ', '-')]}>{w.data.status}</span><Lifecycle stages={w.data.stages} compact /></div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 06 Journey -->
+  <section id="journey" class="wrap block reveal">
+    <p class="eyebrow"><span class="num">06</span> Journey</p>
+    <h2>Developer to product owner.</h2>
+    <ol class="timeline">
+      {journey.map((j) => (
+        <li>
+          <p class="when">{j.when}</p>
+          <div>
+            <h3>{j.role}</h3>
+            <p class="where">{j.where}</p>
+            <p>{j.body}</p>
+            {j.ids.length > 0 && <p class="cases"><span>Case studies</span>{j.ids.map((id) => <a href={`/work/${id}/`}>{byId[id].data.title}</a>)}</p>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- 07 AI -->
+  <section id="ai" class="wrap block reveal">
+    <p class="eyebrow"><span class="num">07</span> AI-first, responsibly</p>
+    <h2>Fast with AI. Careful with what it says.</h2>
+    <p class="muted intro">AI is part of how I discover, write and build every day. What reaches a client, a patient or a stakeholder has always been checked by a person first.</p>
+    <div class="ai">
+      {aiPrinciples.map((a, i) => (
+        <article><span class="lens-n">{String(i + 1).padStart(2, '0')}</span><h3>{a.name}</h3><p>{a.line}</p></article>
+      ))}
+    </div>
+    <p class="ai-proof">In practice: the ordering assistant fills a schema and the database decides what exists; Deen Companion's page says plainly that it was AI-assisted and what is still untested; every number on this site comes from a source I can show.</p>
+  </section>
+
+  <!-- 07 About -->
+  <section class="wrap block reveal">
+    <p class="eyebrow"><span class="num">08</span> About</p>
+    <div class="about">
+      <div>
+        <h2>How I work.</h2>
+        <p>Five years on one product family taught me every side of it: I've written the Swift, written the test cases, written the BRD and owned the backlog. That's why engineers get requirements from me they can build without coming back, and why stakeholders get dates they can trust.</p>
+        <p>I start with the problem and the people who have it, find the real scope, and ship in small slices that a client can see and react to. After launch I stay close to what the numbers and the users say, and pick the next iteration from evidence.</p>
+      </div>
+      <div class="skills">
+        {Object.entries(skills).map(([g, items]) => <div><h3>{g}</h3><ul>{items.map((i) => <li>{i}</li>)}</ul></div>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 Certifications -->
+  <section id="certs" class="wrap block reveal">
+    <p class="eyebrow"><span class="num">09</span> Certifications &amp; awards</p>
+    <h2>What I've studied, and what I've been recognised for.</h2>
+    <ul class="certs">
+      {certs.map((c) => <li><span class="tag">{c.group}</span><strong>{c.name}</strong>{c.by && <span class="by">{c.by}</span>}</li>)}
+    </ul>
+    <ul class="awards">
+      {awards.map((a) => <li><span aria-hidden="true">★</span><div><strong>{a.name}</strong><span class="by">{a.by}</span></div></li>)}
+    </ul>
+  </section>
+
+  <!-- 10 Contact -->
+  <section id="contact" class="wrap block reveal">
+    <p class="eyebrow"><span class="num">10</span> Contact</p>
+    <h2>Have a product problem worth solving?</h2>
+    <p class="muted intro">Open to Product Owner, Product Manager and Business Analyst roles in India and the Gulf. Available to join immediately.</p>
+    <dl class="contact">
+      <div><dt>Email</dt><dd><a href="mailto:khansi88799@gmail.com">khansi88799@gmail.com</a> <button class="copy" data-copy="khansi88799@gmail.com">Copy</button></dd></div>
+      <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/mohammad-saeed-khan-b9159b215">linkedin.com/in/mohammad-saeed-khan-b9159b215</a></dd></div>
+      <div><dt>CV</dt><dd><a href="/Mohammad_Saeed_Khan_CV.pdf" download>Download PDF</a></dd></div>
+    </dl>
+  </section>
+</Base>
+
+<script>
+  // Tracer: highlight the stages a project went through
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-pick]');
+  const stages = document.querySelectorAll<HTMLElement>('.stage');
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    const id = b.dataset.pick!;
+    buttons.forEach((x) => { const on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', String(on)); });
+    stages.forEach((s) => {
+      const items = s.querySelectorAll<HTMLElement>('li');
+      const hit = id === 'all' || [...items].some((li) => li.dataset.id === id);
+      s.classList.toggle('dim', !hit);
+      items.forEach((li) => li.classList.toggle('hl', id !== 'all' && li.dataset.id === id));
+    });
+  }));
+  // Copy email
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy!); b.textContent = 'Copied'; setTimeout(() => (b.textContent = 'Copy'), 1500); } catch { /* clipboard blocked */ }
+  }));
+</script>
+
+<style>
+  .hero { padding-top: clamp(56px, 10vw, 120px); padding-bottom: 24px }
+  h1 { font-size: clamp(40px, 7vw, 84px); margin: 0 0 26px; max-width: 15ch; font-weight: 600; letter-spacing: -.035em; line-height: 1.02 }
+  h1 span { color: var(--faint) }
+  .lede { font-size: clamp(18px, 2vw, 21px); max-width: 60ch; color: var(--muted); margin: 0 }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px }
+  .arc { list-style: none; padding: 0; margin: 64px 0 0; display: flex; flex-wrap: wrap; gap: 0; font: 500 12px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px }
+  .arc li { display: flex; align-items: center }
+  .arc li:not(:last-child)::after { content: "→"; margin: 0 14px; color: var(--accent) }
+  .arc li:last-child { color: var(--fg) }
+  .block { padding-top: clamp(80px, 11vw, 140px) }
+  .intro { max-width: 60ch; margin: 0 0 24px }
+
+  .lens { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; margin-top: 36px; border-top: 1px solid var(--line) }
+  .lens article { padding: 26px 24px 28px 0; border-bottom: 1px solid var(--line) }
+  .lens-n { font: 500 12px var(--mono); color: var(--accent) }
+  .lens h3 { font-size: 26px; margin: 8px 0 8px }
+  .lens p { margin: 0 0 14px; color: var(--muted); font-size: 15.5px }
+  .applied { font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase }
+  .applied a { text-decoration: none }
+  .lens blockquote { margin: 0; font-size: 15px; font-style: italic; border-left: 2px solid var(--line); padding-left: 12px }
+  .featured { margin-top: 24px; border-bottom: 1px solid var(--line) }
+
+  .picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 28px }
+  .picker button { font: 500 14px var(--body); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer }
+  .picker button.on { background: var(--fg); color: var(--bg); border-color: var(--fg) }
+  .phases { display: grid; grid-template-columns: 3fr 2fr 2fr 3fr; gap: 14px }
+  .phase { min-width: 0 }
+  .phase-name { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; padding-bottom: 8px; border-bottom: 2px solid var(--accent) }
+  .stage { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; transition: opacity .25s }
+  .stage.dim { opacity: .3 }
+  .stage-name { font: 600 15px var(--display); margin: 0 0 8px; display: flex; gap: 8px }
+  .stage-name span { font: 500 11px var(--mono); color: var(--faint); padding-top: 3px }
+  .stage ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px }
+  .stage li { font-size: 12px; padding: 2px 7px; border-radius: 4px; background: var(--bg); color: var(--muted) }
+  .stage li.hl { background: var(--accent); color: var(--accent-ink) }
+  @media (max-width: 860px) { .phases { grid-template-columns: 1fr 1fr } }
+  @media (max-width: 520px) { .phases { grid-template-columns: 1fr } }
+
+  .more { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 28px; align-items: start }
+  .mc { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s }
+  .mc:hover { border-color: var(--fg); transform: translateY(-2px) }
+  .mc img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line) }
+  .mc-body { padding: 18px 20px 20px }
+  .mc-tags { display: flex; flex-wrap: wrap; gap: 6px }
+  .mc h3 { font-size: 22px; margin: 14px 0 6px }
+  .mc p { margin: 0 0 12px; font-size: 15.5px }
+  .mc-role { font-size: 14px !important; color: var(--muted) }
+  .mc-role span { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; margin-right: 8px }
+  .mc-foot { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; margin-top: 16px }
+
+  .timeline { list-style: none; padding: 0; margin: 32px 0 0 }
+  .timeline li { display: grid; grid-template-columns: 160px 1fr; gap: 24px; padding: 24px 0; border-top: 1px solid var(--line) }
+  .when { font: 500 13px var(--mono); color: var(--muted); margin: 4px 0 0 }
+  .timeline h3 { font-size: 24px; margin: 0 }
+  .where { color: var(--accent); font-size: 14.5px; margin: 2px 0 8px }
+  .timeline p { margin: 0 0 8px; max-width: 64ch }
+  .cases { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline }
+  .cases span { font: 500 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+  .cases a { font-weight: 600; text-decoration: none; font-size: 15px }
+  @media (max-width: 640px) { .timeline li { grid-template-columns: 1fr; gap: 4px } }
+
+  .about { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px }
+  .about p { color: var(--muted); max-width: 60ch }
+  .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-content: start }
+  .skills h3 { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px }
+  .skills ul { list-style: none; padding: 0; margin: 0 }
+  .skills li { padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 14.5px }
+  .ai { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-top: 28px }
+  .ai article { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px 22px }
+  .ai h3 { font-size: 20px; margin: 8px 0 6px }
+  .ai p { margin: 0; font-size: 15px; color: var(--muted) }
+  .ai-proof { margin: 22px 0 0; max-width: 75ch; font-size: 15px; border-left: 3px solid var(--accent); padding: 4px 0 4px 16px }
+  .certs { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px }
+  .certs li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start }
+  .certs strong { font: 600 17px/1.3 var(--display) }
+  .by { font-size: 14px; color: var(--muted) }
+  .awards { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px }
+  .awards li { display: flex; gap: 14px; align-items: center; border: 1px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 16px 18px }
+  .awards li > span { color: var(--accent); font-size: 22px }
+  .awards strong { display: block; font: 600 17px/1.3 var(--display) }
+  @media (max-width: 860px) { .about { grid-template-columns: 1fr; gap: 24px } }
+  @media (max-width: 420px) { .skills { grid-template-columns: 1fr } }
+
+  .contact { margin: 12px 0 0; border-top: 1px solid var(--line) }
+  .contact div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line) }
+  .contact dt { font: 500 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-top: 6px }
+  .contact dd { margin: 0; font-size: clamp(16px, 2.2vw, 22px); font-family: var(--display); overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 12px; align-items: center }
+  .contact a { text-decoration: none }
+  .copy { font: 500 12px var(--mono); padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--fg); cursor: pointer }
+  @media (max-width: 560px) { .contact div { grid-template-columns: 1fr; gap: 4px } }
+</style>
