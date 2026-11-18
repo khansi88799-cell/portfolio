@@ -34,15 +34,16 @@ const aiPrinciples = [
 ];
 
 const certs = [
-  { name: 'Claude Certified Architect – Professional', by: 'Anthropic', group: 'AI' },
+  { name: 'Claude Certified Architect – Professional', by: 'Anthropic · 2026', group: 'AI', link: 'https://www.credly.com/badges/7f06d97d-a41f-4645-b70f-b1b771141e81' },
   { name: 'Generative AI', group: 'AI' },
-  { name: 'AI for Project Management', group: 'AI' },
+  { name: 'AI for Project Management', by: 'Udemy · 2025', group: 'AI' },
   { name: 'Agile Software Development', by: 'University of Minnesota', group: 'Product & delivery' },
-  { name: 'Fundamentals of Business Analysis', group: 'Product & delivery' },
+  { name: 'Business Analysis Fundamentals', by: 'Udemy · 2025', group: 'Product & delivery' },
+  { name: 'Project Management Office (PMO) for Management Consultants', by: 'Udemy · 2025', group: 'Product & delivery' },
   { name: 'BPMN 2.0', group: 'Product & delivery' },
   { name: 'Power BI', group: 'Data' },
   { name: 'MBA, Business Management', by: 'NMIMS, Mumbai · 2026', group: 'Education' },
-];
+] as { name: string; by?: string; group: string; link?: string }[];
 const awards = [
   { name: 'Value Creator Award', by: 'Capgemini · 2025' },
   { name: 'Nominated, Delivery Excellence Award', by: 'Capgemini · 2024' },
@@ -193,7 +194,7 @@ const skills = {
     <p class="eyebrow"><span class="num">09</span> Certifications &amp; awards</p>
     <h2>What I've studied, and what I've been recognised for.</h2>
     <ul class="certs">
-      {certs.map((c) => <li><span class="tag">{c.group}</span><strong>{c.name}</strong>{c.by && <span class="by">{c.by}</span>}</li>)}
+      {certs.map((c) => <li><span class="tag">{c.group}</span><strong>{c.name}</strong>{c.by && <span class="by">{c.by}</span>}{c.link && <a class="verify" href={c.link}>Verify on Credly ↗</a>}</li>)}
     </ul>
     <ul class="awards">
       {awards.map((a) => <li><span aria-hidden="true">★</span><div><strong>{a.name}</strong><span class="by">{a.by}</span></div></li>)}
@@ -310,6 +311,7 @@ const skills = {
   .certs li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start }
   .certs strong { font: 600 17px/1.3 var(--display) }
   .by { font-size: 14px; color: var(--muted) }
+  .verify { font-size: 14px; font-weight: 600; text-decoration: none }
   .awards { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px }
   .awards li { display: flex; gap: 14px; align-items: center; border: 1px solid var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 16px 18px }
   .awards li > span { color: var(--accent); font-size: 22px }
