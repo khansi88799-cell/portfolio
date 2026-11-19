@@ -4,7 +4,7 @@ headline: "A prayer and Quran app that works with no internet, no account and no
 tagline: "A free, offline-first Islamic companion app for iOS and Android, with on-device prayer times and an azan that sounds even when the app is closed."
 kind: independent
 featured: false
-company: "Independent · community project"
+company: "Independent · client project for an NGO community"
 role: "Product Owner & Senior Software Engineer"
 period: "Oct 2026 – present"
 status: In review
