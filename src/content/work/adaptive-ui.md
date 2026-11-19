@@ -23,6 +23,17 @@ beforeAfter:
   - { area: "Requirements", before: "One line: support landscape", after: "Every screen flow documented in Confluence, with edge and error cases" }
   - { area: "Design", before: "Portrait-only layouts", after: "Landscape designs reworked with the UI/UX team, with reusable patterns across markets" }
   - { area: "Effort", before: "Manual boilerplate", after: "GitHub Copilot rolled out to the team, saving about 22 days of effort" }
+swimlane:
+  lanes: ["Client", "Product Owner & BA", "UI/UX team", "iOS & Android teams"]
+  steps:
+    - { lane: 0, label: "Asks for landscape support, estimated at 90 screens", short: "Asks: 90 screens" }
+    - { lane: 1, label: "Walks every journey screen by screen", short: "Walks journeys" }
+    - { lane: 1, label: "Maps 324 screens, including popups and half-sheets", short: "Finds 324 screens" }
+    - { lane: 1, label: "Documents every flow with edge and error cases in Confluence", short: "Documents flows" }
+    - { lane: 2, label: "Reworks layouts with reusable landscape patterns", short: "Reworks designs" }
+    - { lane: 3, label: "Builds each sprint, with GitHub Copilot cutting boilerplate", short: "Builds sprints" }
+    - { lane: 0, label: "Sees a demo every sprint", short: "Sprint demo" }
+    - { lane: 3, label: "Ships all 324 screens across five markets", short: "Ships 5 markets" }
 ---
 
 ## The problem

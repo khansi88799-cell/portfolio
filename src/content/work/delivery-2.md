@@ -28,6 +28,16 @@ flow:
   - { title: "Validate", body: "The address is checked before it is saved." }
   - { title: "Find stores", body: "Distance and nearby delivering stores are worked out." }
   - { title: "Order", body: "The customer continues to the menu without leaving the app." }
+swimlane:
+  lanes: ["Customer", "Brand app", "Google Address Validation", "Store APIs"]
+  steps:
+    - { lane: 0, label: "Chooses delivery and starts typing an address", short: "Starts delivery" }
+    - { lane: 1, label: "Autocomplete suggests real addresses", short: "Suggests addresses" }
+    - { lane: 2, label: "Confirms the address is real and deliverable", short: "Validates address" }
+    - { lane: 1, label: "Saves the checked address", short: "Saves address" }
+    - { lane: 3, label: "Works out distance and nearby delivering stores", short: "Finds stores" }
+    - { lane: 1, label: "Shows the store, or a store-closed or out-of-area message", short: "Shows store" }
+    - { lane: 0, label: "Continues to the menu without leaving the app", short: "Orders in-app" }
 ---
 
 ## Where I started

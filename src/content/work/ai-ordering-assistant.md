@@ -23,6 +23,17 @@ flow:
   - { title: "Main agent", body: "Understands the request and hands each part to the right sub-agent." }
   - { title: "Schema, not guesswork", body: "The model fills a fixed query schema; the database returns real menu items." }
   - { title: "Reply in text and voice", body: "The answer streams back, with a fallback if the item isn't available." }
+swimlane:
+  lanes: ["Customer", "Main agent", "Cart, recommendation and order agents", "Menu database"]
+  steps:
+    - { lane: 0, label: "Speaks or types an order", short: "Speaks or types" }
+    - { lane: 1, label: "Understands the request", short: "Understands" }
+    - { lane: 1, label: "Hands each part to the right sub-agent", short: "Delegates" }
+    - { lane: 2, label: "Fills a fixed query schema", short: "Fills schema" }
+    - { lane: 3, label: "Returns only items that exist on the menu", short: "Real items only" }
+    - { lane: 2, label: "Updates the cart or suggests items", short: "Cart or suggest" }
+    - { lane: 1, label: "Streams the reply, with a fallback if an item isn't available", short: "Streams reply" }
+    - { lane: 0, label: "Gets the answer in text and voice", short: "Text and voice" }
 ---
 
 ## The goal

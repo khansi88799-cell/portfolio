@@ -1,0 +1,85 @@
+---
+// Vertical swim-lane diagram: one column per lane, steps run top to bottom in order.
+// Full mode shows each step's label; compact mode (cards) shows the short label in larger type.
+interface Step { lane: number; label: string; short?: string }
+interface Props { lanes: string[]; steps: Step[]; compact?: boolean; title: string }
+const { lanes, steps, compact = false, title } = Astro.props;
+
+const colW = compact ? 170 : 210;
+const headH = compact ? 58 : 64;
+const rowH = compact ? 62 : 96;
+const pad = 14;
+const font = compact ? 15 : 13;
+const lineH = font + 3;
+const maxChars = compact ? 16 : 24;
+const W = colW * lanes.length;
+const H = headH + rowH * steps.length + 12;
+
+function wrap(text: string, n: number) {
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let cur = '';
+  for (const w of words) {
+    if ((cur + ' ' + w).trim().length > n && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim();
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+
+const boxes = steps.map((s, i) => {
+  const text = compact ? (s.short ?? s.label) : s.label;
+  const lines = wrap(text, maxChars);
+  const x = s.lane * colW + pad, y = headH + i * rowH + 10;
+  return { x, y, w: colW - pad * 2, h: rowH - 20, lines, n: i + 1 };
+});
+
+const arrows = boxes.slice(0, -1).map((b, i) => {
+  const nb = boxes[i + 1];
+  const x1 = b.x + b.w / 2, y1 = b.y + b.h, x2 = nb.x + nb.w / 2, y2 = nb.y;
+  if (x1 === x2) return `M${x1} ${y1} V${y2 - 2}`;
+  const my = (y1 + y2) / 2;
+  return `M${x1} ${y1} V${my} H${x2} V${y2 - 2}`;
+});
+const laneHead = (l: string) => wrap(l, compact ? 18 : 26);
+const uid = title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + (compact ? '-c' : '');
+---
+<svg class:list={['swim', { compact }]} viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby={`${uid}-t`}>
+  <title id={`${uid}-t`}>{`${title}: ${steps.map((s, i) => `${i + 1}. ${lanes[s.lane]}: ${s.label}`).join('; ')}`}</title>
+  <defs>
+    <marker id={`${uid}-a`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" class="sw-head" />
+    </marker>
+  </defs>
+  {lanes.map((l, i) => (
+    <g>
+      <rect x={i * colW} y="0" width={colW} height={H} class:list={['sw-lane', { alt: i % 2 }]} />
+      <text x={i * colW + colW / 2} y={laneHead(l).length > 1 ? 24 : 36} class="sw-lname" text-anchor="middle">
+        {laneHead(l).map((t, k) => <tspan x={i * colW + colW / 2} dy={k ? 15 : 0}>{t}</tspan>)}
+      </text>
+    </g>
+  ))}
+  <line x1="0" y1={headH - 6} x2={W} y2={headH - 6} class="sw-rule" />
+  {arrows.map((d) => <path d={d} class="sw-arrow" marker-end={`url(#${uid}-a)`} />)}
+  {boxes.map((b) => (
+    <g>
+      <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="8" class="sw-box" />
+      {!compact && <text x={b.x + 10} y={b.y + 16} class="sw-n">{String(b.n).padStart(2, '0')}</text>}
+      <text x={b.x + b.w / 2} y={b.y + b.h / 2 - ((b.lines.length - 1) * lineH) / 2 + font / 3 + (compact ? 0 : 8)} text-anchor="middle" class="sw-text" style={`font-size:${font}px`}>
+        {b.lines.map((t, k) => <tspan x={b.x + b.w / 2} dy={k ? lineH : 0}>{t}</tspan>)}
+      </text>
+    </g>
+  ))}
+</svg>
+<style>
+  .swim { width: 100%; height: auto; display: block; font-family: var(--body) }
+  .sw-lane { fill: var(--surface) }
+  .sw-lane.alt { fill: var(--bg) }
+  .sw-lname { fill: var(--muted); font: 500 11.5px var(--mono); letter-spacing: .08em; text-transform: uppercase }
+  .compact .sw-lname { font-size: 13px }
+  .sw-rule { stroke: var(--line); stroke-width: 1 }
+  .sw-box { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.2 }
+  .sw-text { fill: var(--fg); font-weight: 500 }
+  .sw-n { fill: var(--accent); font: 500 10px var(--mono) }
+  .sw-arrow { fill: none; stroke: var(--muted); stroke-width: 1.4 }
+  .sw-head { fill: var(--muted) }
+</style>

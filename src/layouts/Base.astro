@@ -41,7 +41,7 @@ const nav = [
       color-scheme: dark;
     }
     * { box-sizing: border-box }
-    html { scroll-behavior: smooth; scroll-padding-top: 72px }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px }
     body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.65 var(--body); -webkit-font-smoothing: antialiased }
     ::selection { background: var(--accent-soft) }
     a { color: var(--accent) }
@@ -65,7 +65,7 @@ const nav = [
     .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease }
     .reveal.in { opacity: 1; transform: none }
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } .reveal { opacity: 1; transform: none; transition: none } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto } .menu-btn span { transition: none } .reveal { opacity: 1; transform: none; transition: none } }
   </style>
 </head>
 <body>
@@ -73,7 +73,7 @@ const nav = [
   <header class="site">
     <nav class="wrap" aria-label="Main">
       <a class="brand" href="/">Mohammad Saeed Khan</a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span><span></span></button>
       <div class="links" id="menu">{nav.map((n) => <a href={n.href}>{n.label}</a>)}</div>
     </nav>
   </header>
@@ -89,10 +89,11 @@ const nav = [
     btn?.addEventListener('click', () => {
       const open = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', String(!open));
+      btn.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
       menu?.classList.toggle('open', !open);
     });
     menu?.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).tagName === 'A') { btn?.setAttribute('aria-expanded', 'false'); menu.classList.remove('open'); }
+      if ((e.target as HTMLElement).tagName === 'A') { btn?.setAttribute('aria-expanded', 'false'); btn?.setAttribute('aria-label', 'Open menu'); menu.classList.remove('open'); }
     });
     // Fade sections in as they scroll into view
     const io = new IntersectionObserver((entries) => entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { rootMargin: '0px 0px -8% 0px' });
@@ -100,17 +101,24 @@ const nav = [
   </script>
   <style>
     header.site { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line) }
-    nav { display: flex; justify-content: space-between; align-items: center; height: 60px; gap: 16px; position: relative }
-    .brand { font: 600 16px var(--display); color: var(--fg); text-decoration: none; white-space: nowrap }
-    .links { display: flex; gap: 22px }
-    .links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15px; white-space: nowrap }
+    nav { display: flex; justify-content: space-between; align-items: center; height: 76px; gap: 24px; position: relative }
+    .brand { font: 600 17px var(--display); color: var(--fg); text-decoration: none; white-space: nowrap }
+    .links { display: flex; gap: 30px }
+    .links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 15.5px; white-space: nowrap; padding: 6px 0 }
     .links a:hover { color: var(--fg) }
-    .menu-btn { display: none; font: 500 15px var(--body); background: none; border: 1px solid var(--line); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer }
+    .menu-btn { display: none; width: 44px; height: 44px; margin-right: -10px; background: none; border: 0; border-radius: 8px; color: var(--fg); cursor: pointer; position: relative }
+    .menu-btn span { position: absolute; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .2s, opacity .2s }
+    .menu-btn span:nth-child(1) { top: 15px } .menu-btn span:nth-child(2) { top: 21px } .menu-btn span:nth-child(3) { top: 27px }
+    .menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg) }
+    .menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0 }
+    .menu-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg) }
+    .menu-btn:hover { background: var(--surface) }
     @media (max-width: 1080px) {
       .menu-btn { display: block }
-      .links { display: none; position: absolute; top: 60px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px 16px }
+      .links { display: none; position: absolute; top: 76px; left: 0; right: 0; flex-direction: column; gap: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px max(16px, env(safe-area-inset-left)) 20px }
       .links.open { display: flex }
-      .links a { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 17px }
+      .links a { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px }
+      .links a:last-child { border-bottom: 0 }
     }
     .skip { position: absolute; left: 12px; top: -48px; z-index: 50; background: var(--accent); color: var(--accent-ink); padding: 8px 14px; border-radius: 6px; font-weight: 600; text-decoration: none }
     .skip:focus { top: 12px }

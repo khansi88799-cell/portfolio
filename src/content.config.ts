@@ -26,6 +26,10 @@ const work = defineCollection({
     metrics: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
     beforeAfter: z.array(z.object({ area: z.string(), before: z.string(), after: z.string() })).default([]),
     flow: z.array(z.object({ title: z.string(), body: z.string() })).default([]),
+    swimlane: z.object({                  // diagram used where there are no screenshots (client work)
+      lanes: z.array(z.string()),
+      steps: z.array(z.object({ lane: z.number(), label: z.string(), short: z.string().optional() })),
+    }).optional(),
     cover: z.string().optional(),
     video: z.string().optional(),
     gallery: z.array(z.object({ src: z.string(), alt: z.string(), phone: z.boolean().default(false) })).default([]),

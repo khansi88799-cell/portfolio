@@ -2,6 +2,7 @@
 // Featured case-study card: problem, outcome, role, metrics, status and lifecycle
 import type { CollectionEntry } from 'astro:content';
 import Lifecycle from './Lifecycle.astro';
+import Swimlane from './Swimlane.astro';
 interface Props { entry: CollectionEntry<'work'>; index: number }
 const { entry, index } = Astro.props;
 const d = entry.data;
@@ -13,6 +14,7 @@ const d = entry.data;
     <p class="wc-title">{d.title}</p>
     <p class="wc-company">{d.company} · {d.period}</p>
     {d.cover && <a href={`/work/${entry.id}/`} class="wc-img" tabindex="-1"><img src={d.cover} alt="" loading="lazy" width="1440" height="900" /></a>}
+    {!d.cover && d.swimlane && <a href={`/work/${entry.id}/`} class="wc-img wc-swim" tabindex="-1" aria-hidden="true"><Swimlane lanes={d.swimlane.lanes} steps={d.swimlane.steps} title={d.title} compact /></a>}
   </div>
   <div class="wc-main">
     <h3><a href={`/work/${entry.id}/`}>{d.headline}</a></h3>
@@ -38,6 +40,8 @@ const d = entry.data;
   .wc-title { font: 600 14px var(--mono); letter-spacing: .1em; text-transform: uppercase; margin: 0 }
   .wc-company { font-size: 14px; color: var(--muted); margin: 4px 0 18px }
   .wc-img img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 8px; border: 1px solid var(--line) }
+  .wc-swim { display: block; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; transition: border-color .15s }
+  .wc-swim:hover { border-color: var(--accent) }
   .wc h3 { font-size: clamp(24px, 2.8vw, 34px); margin: 0 0 22px }
   .wc h3 a { color: inherit; text-decoration: none }
   .wc h3 a:hover { color: var(--accent) }

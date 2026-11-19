@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Lifecycle from '../../components/Lifecycle.astro';
+import Swimlane from '../../components/Swimlane.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -42,6 +43,14 @@ const phoneShots = d.gallery.filter((g) => g.phone);
     )}
 
     <section class="wrap"><div class="life"><Lifecycle stages={d.stages} /></div></section>
+
+    {d.swimlane && (
+      <section class="wrap sec">
+        <h2>Who does what</h2>
+        <p class="swim-note">A swim-lane view of the flow, step by step. Drawn from the work described here; no client material is shown.<span class="swim-hint"> Swipe sideways to see every lane.</span></p>
+        <div class="swim-wrap"><Swimlane lanes={d.swimlane.lanes} steps={d.swimlane.steps} title={d.title} /></div>
+      </section>
+    )}
 
     {d.video && (
       <figure class="wrap media">
@@ -120,6 +129,11 @@ const phoneShots = d.gallery.filter((g) => g.phone);
   .media { margin-top: 48px }
   .media video, .media img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: var(--surface) }
   figcaption { font-size: 13.5px; color: var(--muted); margin-top: 8px }
+  .swim-note { color: var(--muted); font-size: 15px; margin: 0 0 18px }
+  .swim-hint { display: none }
+  @media (max-width: 700px) { .swim-hint { display: inline } }
+  .swim-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; max-width: 900px }
+  .swim-wrap :global(svg) { min-width: 620px }
   .note { margin-top: 40px; font-size: 14px; color: var(--muted) }
   .sec { margin-top: 72px }
   .sec h2 { font-size: clamp(26px, 3.4vw, 36px) }
