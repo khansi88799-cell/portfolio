@@ -22,7 +22,7 @@ const journey = [
   { when: '2023 – 2024', role: 'Developer + QA Lead', where: 'Capgemini · global QSR brand', body: 'Led QA for the delivery module alongside development: 400+ test cases and four automation suites running daily. Handled the UK release, which passed UAT with zero bugs.', ids: [] },
   { when: '2024 – 2025', role: 'Business Analyst', where: 'Capgemini · global QSR brand', body: 'Moved from writing code to writing what should be built: BRDs, FRDs, BPMN, user stories and API contracts for the 2.0 ordering journey.', ids: ['delivery-2'] },
   { when: '2025 – 2026', role: 'Product Owner & BA', where: 'Capgemini · global QSR brand', body: 'Owned the backlog for landscape support across 324 screens, then for a Generative AI ordering assistant. Value Creator Award, 2025.', ids: ['adaptive-ui', 'ai-ordering-assistant'] },
-  { when: '2025 – 2026', role: 'MBA, Business Management', where: 'NMIMS, Mumbai', body: 'Strategy, finance and marketing to go with the delivery experience.', ids: [] },
+  { when: '2025 – 2026', role: 'MBA, Business Management', where: 'NMIMS, Mumbai', body: 'Strategy, finance and marketing to go with the delivery experience. My project, DeadPool Protocol, is a freelancer payment-protection proposal with a BRD, a 5-year financial model and a live prototype.', ids: ['deadpool-protocol'] },
   { when: '2026 – now', role: 'Building products for clients', where: 'Independent', body: 'Taking client ideas from discovery to live products for a clinic, a steel and roofing business and an NGO community, plus one product of my own, as product owner, analyst and engineer with AI-assisted development.', ids: ['skin-master-clinic', 'ashraf-traders', 'insurance-learning-desk', 'deen-companion'] },
 ];
 
@@ -57,12 +57,12 @@ const skills = {
   Tools: ['JIRA', 'Confluence', 'Figma', 'Postman', 'Power BI', 'GitHub'],
 };
 ---
-<Base title="Home" description="Product Owner and Business Analyst with 5+ years on a global QSR brand's ordering apps, and four products built end to end for clients and myself. Former iOS developer.">
+<Base title="Home" description="Product Owner and Business Analyst with 5+ years on a global QSR brand's ordering apps, and five products built end to end for clients, myself and my MBA project. Former iOS developer.">
   <!-- 01 Hero -->
   <section class="hero wrap">
     <p class="eyebrow">Product Owner · Product Manager · Business Analyst</p>
     <h1>I started by writing the code.<br /><span>Now I decide what's worth building.</span></h1>
-    <p class="lede">Product Owner with 5+ years on a global QSR brand's ordering apps at Capgemini, moving from iOS developer to QA lead, Business Analyst and Product Owner. I also build products end to end as an independent: three for clients (a clinic, a steel and roofing business and an NGO community) and one of my own. Three are live.</p>
+    <p class="lede">Product Owner with 5+ years on a global QSR brand's ordering apps at Capgemini, moving from iOS developer to QA lead, Business Analyst and Product Owner. I also build products end to end as an independent: three for clients (a clinic, a steel and roofing business and an NGO community) and one of my own, plus my NMIMS MBA project. Four are live.</p>
     <div class="cta">
       <a class="btn primary" href="#work">Explore my work</a>
       <a class="btn" href="#lens">How I think</a>
@@ -278,11 +278,12 @@ const skills = {
   @media (max-width: 860px) { .phases { grid-template-columns: 1fr 1fr } }
   @media (max-width: 520px) { .phases { grid-template-columns: 1fr } }
 
-  .more { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 28px; align-items: stretch }
+  .more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 28px; align-items: stretch }
   .mc { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s }
   .mc:hover { border-color: var(--fg); transform: translateY(-2px) }
   .mc img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line) }
   .mc { display: flex; flex-direction: column }
+  @media (max-width: 720px) { .more { grid-template-columns: 1fr } }
   .mc-body { padding: 18px 20px 20px; flex: 1; display: flex; flex-direction: column }
   .mc-tags { display: flex; flex-wrap: wrap; gap: 6px }
   .mc h3 { font-size: 22px; margin: 14px 0 6px }
